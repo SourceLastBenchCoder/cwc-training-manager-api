@@ -1,5 +1,7 @@
 const express = require("express")
 const mongoose = require("mongoose")
+require("dotenv").config()
+
 const router = express.Router()
 const Administrator = require("../models/administrator")
 
@@ -15,7 +17,7 @@ router.post("/", async (req, res) => {
         fullName: req.body.fullName,
         emailId: req.body.emailId,
         phoneNo: req.body.phoneNo,
-        avatar: `${IMAGE_URL}${req.body.avatar}`,
+        avatar: `${process.env.IMAGE_URL}${req.body.avatar}`,
         loginId: req.body.loginId,
         password: req.body.password,
         status: req.body.status,
@@ -47,7 +49,7 @@ router.put("/:adminId", async (req, res) => {
             fullName: req.body.fullName,
             emailId: req.body.emailId,
             phoneNo: req.body.phoneNo,
-            avatar: `${IMAGE_URL}${req.body.avatar}`,
+            avatar: `${process.env.IMAGE_URL}${req.body.avatar}`,
             loginId: req.body.loginId,
             password: req.body.password,
             status: req.body.status,

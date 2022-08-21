@@ -3,6 +3,7 @@ const mongoose = require("mongoose")
 const cors = require("cors")
 require("dotenv").config()
 const multer = require('multer')
+
 const AdministratorRoute = require("./routes/administrator")
 
 const sampleData = {
@@ -17,10 +18,18 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use('/images', express.static('images'));
 
+
+mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true })
+    .then(() => {
+        console.log("Connected to Mongo Database successfully")
+    })
+    .catch(error => {
+        console.log("Error Connecting in Mongo Database")
+    })
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const ext = file.mimetype.split("/")[1];
-        cb(null, `images/admin-${file.fieldname}-${Date.now()}.${ext}`)
+        cb(null, 'images/')
     },
     filename: (req, file, cb) => {
         cb(null, file.originalname)
@@ -36,14 +45,6 @@ app.post('/api/upload', upload.single('file'), function (req, res) {
 app.get("/api/status", (req, res) => {
     res.send(sampleData)
 })
-
-mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true })
-    .then(() => {
-        console.log("Connected to Mongo Database successfully")
-    })
-    .catch(error => {
-        console.log("Error Connecting in Mongo Database")
-    })
 
 app.use("/api/administrator", AdministratorRoute)
 
